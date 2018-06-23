@@ -61,6 +61,32 @@ reg [2:0] do, do_next;
 // combinational part
 always@(*) begin
     case(state)
+        for(i=0;i<=5;i=i+1)begin
+            C_sort_next[i] = C_sort[i];
+            symbol_sort_next[i] = symbol_sort[i];
+            C0_next[i] = C0[i];
+            symbol0_next[i] = symbol0[i];
+        end
+        for(i=0;i<=4;i=i+1)begin
+            C1_next[i] = C1[i];
+            symbol1_next[i] = symbol1[i];
+        end
+        for(i=0;i<=3;i=i+1)begin
+            C2_next[i] = C2[i];
+            symbol2_next[i] = symbol2[i];
+        end
+        for(i=0;i<=2;i=i+1)begin
+            C3_next[i] = C3[i];
+            symbol3_next[i] = symbol3[i];
+        end
+        for(i=0;i<=1;i=i+1)begin
+            C4_next[i] = C4[i];
+            symbol4_next[i] = symbol4[i];
+        end
+        state_next = state;
+        sort_count_next = sort_count;
+        sort_change_next = sort_change;
+        do_next = do;
         IDLE:begin
             sort_count_next = 0;
             sort_change_next = 0;
@@ -201,7 +227,38 @@ end
 // sequential part
 always@( posedge clk or posedge reset) begin
     if(reset==1'b1) begin
-    
+        CNT1_buf <= 0;
+        CNT2_buf <= 0;
+        CNT3_buf <= 0;
+        CNT4_buf <= 0;
+        CNT5_buf <= 0;
+        CNT6_buf <= 0;
+        for(i=0;i<=5;i=i+1)begin
+            C_sort[i] <= 0;
+            symbol_sort[i] <= 0;
+            C0[i] <= 0;
+            symbol0[i] <= 0;
+        end
+        for(i=0;i<=4;i=i+1)begin
+            C1[i] <= 0;
+            symbol1[i] <= 0;
+        end
+        for(i=0;i<=3;i=i+1)begin
+            C2[i] <= 0;
+            symbol2[i] <= 0;
+        end
+        for(i=0;i<=2;i=i+1)begin
+            C3[i] <= 0;
+            symbol3[i] <= 0;
+        end
+        for(i=0;i<=1;i=i+1)begin
+            C4[i] <= 0;
+            symbol4[i] <= 0;
+        end
+        state <= IDLE;
+        sort_count <= 0;
+        sort_change <= 0;
+        do <= 0;
     end
     else begin
         CNT1_buf <= CNT1_next;
@@ -210,16 +267,36 @@ always@( posedge clk or posedge reset) begin
         CNT4_buf <= CNT4_next;
         CNT5_buf <= CNT5_next;
         CNT6_buf <= CNT6_next;
-        for(i = 0;i <= 5;i=i+1)begin
-            C0[i] = C0_next[i];
-            C1[i] = C1_next[i];
-            C2[i] = C2_next[i];
-            C3[i] = C3_next[i];
-            C4[i] = C4_next[i];
+        for(i=0;i<=5;i=i+1)begin
+            C_sort[i] <= C_sort_next[i];
+            symbol_sort[i] <= symbol_sort_next[i];
+            C0[i] <= C0_next[i];
+            symbol0[i] <= symbol0_next[i];
         end
+        for(i=0;i<=4;i=i+1)begin
+            C1[i] <= C1_next[i];
+            symbol1[i] <= symbol1_next[i];
+        end
+        for(i=0;i<=3;i=i+1)begin
+            C2[i] <= C2_next[i];
+            symbol2[i] <= symbol2_next[i];
+        end
+        for(i=0;i<=2;i=i+1)begin
+            C3[i] <= C3_next[i];
+            symbol3[i] <= symbol3_next[i];
+        end
+        for(i=0;i<=1;i=i+1)begin
+            C4[i] <= C4_next[i];
+            symbol4[i] <= symbol4_next[i];
+        end
+        state <= IDLE;
+        sort_count <= 0;
+        sort_change <= 0;
+        do <= 0;
+        state <= state_next;
         sort_count <= sort_count_next;
         sort_change <= sort_change_next;
-
+        do <= do_next;
     end
 end
     
