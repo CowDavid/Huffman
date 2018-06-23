@@ -103,7 +103,9 @@ always@(*) begin
             
         end
         SORT_CHECK:begin
-            if(sort_change == 0)begin
+            if(sort_change == 0)begin//sorting is completed
+                sort_change_next = 0;
+                sort_count_next = 0;
                 state_next = COMBINATION;
                 if(do == 5)begin//do = 5 means C0 is sorted
                     for(i=0;i<=do;i=i+1)begin 
@@ -139,6 +141,7 @@ always@(*) begin
             else begin
                 state_next = SORT;
                 sort_change_next = 0;
+                sort_count_next = 0;
             end
         end
         COMBINATION:begin
@@ -155,6 +158,7 @@ always@(*) begin
                 symbol_sort[3] = symbol0[3];
                 symbol_sort[4] = symbol0[4] + symbol0[5];
                 do_next = 4;//do = 4 means C1 is going to be sorted
+                state_next = SORT;
             end
             if(do = 4)begin//do = 4 means C1 is sorted
                 C_sort_next[0] = C1[0];
@@ -166,28 +170,29 @@ always@(*) begin
                 symbol_sort[2] = symbol1[2];
                 symbol_sort[3] = symbol1[3] + symbol1[4];
                 do_next = 3;//do = 3 means C2 is going to be sorted
+                state_next = SORT;
             end
             if(do = 3)begin//do = 3 means C2 is sorted
-                C1[0] = C0[0];
-                C1[1] = C0[1];
-                C1[2] = C0[2];
-                C1[3] = C0[3];
-                C1[4] = C0[3] + C0[4];
+                C_sort_next[0] = C2[0];
+                C_sort_next[1] = C2[1];
+                C_sort_next[2] = C2[2] + C2[3];
+                symbol_sort[0] = symbol2[0];
+                symbol_sort[1] = symbol2[1];
+                symbol_sort[2] = symbol2[2] + symbol2[3];
                 do_next = 2;//do = 2 means C3 is going to be sorted
+                state_next = SORT;
             end
             if(do = 2)begin//do = 2 means C3 is sorted
-                C1[0] = C0[0];
-                C1[1] = C0[1];
-                C1[2] = C0[2];
-                C1[3] = C0[3];
-                C1[4] = C0[3] + C0[4];
+                C_sort_next[0] = C3[0];
+                C_sort_next[1] = C3[1] + C3[2];
+                symbol_sort[0] = symbol3[0];
+                symbol_sort[1] = symbol3[1] + symbol3[2];
                 do_next = 1;//do = 1 means C4 is going to be sorted
+                state_next = SORT;
             end
-            if(do == 1)begin
-                
+            if(do == 1)begin//do = 1 means C4 is sorted
+                state_next = //spilt
             end
-            
-
         end
     endcase
 end
